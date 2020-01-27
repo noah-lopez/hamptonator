@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125808222-1"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-125808222-1');
+  </script>
+
+  
+	<link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+	<title>Hamptonator</title>
+</head>
+
+<script src="./public/html2canvas.js"> </script>
+<script src="./public/exif.js"></script>
+<style>
+
+	body {
+
+   		/*background:url(./public/back.jpg) no-repeat center center fixed;*/
+      background-color: blue;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+	}
+
+	@font-face {
+  		font-family: 'sat2';
+  		src: url("./public/sat2/font.woff"), url("./public/sat2/font.ttf");
+	}
+
+	#frame {
+		width: 750px;
+		height: 750px;
+		margin-left: -375px;
+		left: 50%;
+		position: absolute;
+		background-color: black;
+	}
+
+	#ph1 {
+		position: absolute;
+		width: 465px;
+		height: 550px;
+		background-color: red;
+		text-align: center;
+		font-size:40px;
+		left: 50px;
+		top: 60px;
+		z-index: 1;
+	}
+
+	.bh {
+		position: absolute;
+		width: 200px;
+		top: 150px;
+		margin-left: -60px;
+
+		left: 490px;
+	   	border: 0px;
+        background: transparent;
+        text-align: right;
+        padding: 0;
+
+        font-size: 10px;
+
+		font-family: 'helvetica', sans-serif;
+		position: absolute;
+		-ms-transform: rotate(90deg);
+    	-webkit-transform: rotate(90deg); 
+    	transform: rotate(90deg);
+    	color: white;
+    	z-index: 2;
+	}
+
+
+
+  .watermark {
+    position: absolute;
+    width: 200px;
+    top: 720px;
+    left: 15px;
+      border: 0px;
+        background: transparent;
+        padding: 0;
+
+        font-size: 10px;
+
+    font-family: 'helvetica', sans-serif;
+    position: absolute;
+      color: white;
+      z-index: 2;
+  }
+
+	.title {
+		position: absolute;
+		top: 560px;
+		width: 700px;
+		left: 30px;
+		height: 150px;
+        background: transparent;
+        text-align: left;
+		font-size: 130px;
+		border: 0px;
+		font-family: 'sat2';
+		color: white;
+		z-index: 10;
+	}
+
+
+	#photo1 {
+		width:100%;
+		height: 100%;
+	}
+
+
+	#photo2 {
+		width:100%;
+		height: 100%;
+	}
+
+	.file { display: none; }
+
+
+	.button5 {
+    	background-color: white;
+    	color: black;
+    	border: 2px solid #555555;
+
+
+
+    	padding: 10px;
+    	text-align: center;
+    	vertical-align: middle;
+
+    	font-family: 'Anton', sans-serif;
+    	font-size: 42px;
+
+
+   	}
+
+
+
+   	#buttons {
+   		top: 850px;
+    	margin-left: -250px;
+    	left: 50%;
+    	height: 180px;
+    	width: 500px;
+
+    	position: absolute;
+
+   	}
+
+   	#dbut {
+   		top: 1000px;
+   		left: 50%;
+   		margin-left: -97px;
+   		position: absolute;
+   	}
+
+   	#donation {
+   		top: 1150px;
+   		width: 500px;
+   		margin-left: -250px;
+   		left: 50%;
+   		align-content: middle;
+   		position: absolute;
+   	}
+
+
+
+    .container {
+        display: inline-block;
+        cursor: pointer;
+        position: fixed;
+        z-index: 200;
+        }
+
+    .bar1, .bar2, .bar3 {
+        width: 35px;
+        height: 5px;
+        background-color: #333;
+        margin: 6px 0;
+        transition: 0.4s;
+
+        z-index: 110;
+
+        background-color: white;
+
+    }
+
+    .change .bar1 {
+        -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+        transform: rotate(-45deg) translate(-9px, 6px);
+    }
+
+    .change .bar2 {opacity: 0;}
+
+    .change .bar3 {
+        -webkit-transform: rotate(45deg) translate(-8px, -8px);
+        transform: rotate(45deg) translate(-8px, -8px);
+    }
+
+
+    #menu {
+        background-color: rgba(255, 255, 255, .5);
+        /*opacity: 0.2;*/
+        z-index: 100;
+        top: 0; left: 0; 
+        height: 100%; 
+        width: 100%;
+        position: fixed;
+        text-align: center;
+        display: none;
+
+        /*display: flex;
+        justify-content: center;
+        align-items: center*/
+    }
+
+    .menuLink {
+        color: black;
+        font-size: 100px;
+        text-decoration: none;
+        font-family: 'sat2'; 
+        /*opacity: .8 !important;
+        /*top: 25%;*/
+    }
+
+
+</style>
+
+
+<script type="text/javascript">
+
+
+
+	function getOrientation(file, callback) {
+    	var reader = new FileReader();
+    	reader.onload = function(e) {
+
+        	var view = new DataView(e.target.result);
+        	if (view.getUint16(0, false) != 0xFFD8)
+        	{
+            	return callback(-2);
+        	}
+        	var length = view.byteLength, offset = 2;
+        	while (offset < length) 
+        	{
+            	if (view.getUint16(offset+2, false) <= 8) return callback(-1);
+            	var marker = view.getUint16(offset, false);
+            	offset += 2;
+            	if (marker == 0xFFE1) 
+            	{
+                	if (view.getUint32(offset += 2, false) != 0x45786966) 
+                	{
+                    	return callback(-1);
+                	}
+
+                	var little = view.getUint16(offset += 6, false) == 0x4949;
+                	offset += view.getUint32(offset + 4, little);
+                	var tags = view.getUint16(offset, little);
+                	offset += 2;
+                	for (var i = 0; i < tags; i++)
+                	{
+                    	if (view.getUint16(offset + (i * 12), little) == 0x0112)
+                    	{
+                        	return callback(view.getUint16(offset + (i * 12) + 8, little));
+                    	}
+                	}
+            	}
+            	else if ((marker & 0xFF00) != 0xFF00)
+            	{
+                	break;
+            	}
+            	else
+            	{ 
+                	offset += view.getUint16(offset, false);
+            	}
+        	}
+        	return callback(-1);
+    	};
+    	reader.readAsArrayBuffer(file);
+	}
+
+
+	function drawRotated(degrees){
+    	ctx.clearRect(0,0,canvas.width,canvas.height);
+    	ctx.save();
+    	ctx.translate(canvas.width/2,canvas.height/2);
+    	ctx.rotate(degrees*Math.PI/180);
+    	ctx.drawImage(image,-image.width/2,-image.width/2);
+    	ctx.restore();
+	}
+
+	
+	function readURL1(input) {
+
+
+		ctx = document.getElementById('ph1').getContext('2d'),
+        img = new Image(),
+        f = document.getElementById("upload1").files[0],
+        url = window.URL || window.webkitURL,
+        src = url.createObjectURL(f)
+
+
+      img.src = src;
+
+
+
+      img.onload = function() {
+          var canvas = ctx.canvas;
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+        getOrientation(input.files[0], function(orientation) {
+            // alert('orientation: ' + orientation);
+
+            switch(orientation){
+              case 6:
+                // alert("working");
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2); //let's translate
+                ctx.rotate((90) * Math.PI/180); 
+                ctx.drawImage(img,-canvas.height/2,-canvas.width/2, canvas.height, canvas.width);
+                ctx.restore();
+                
+                var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+                var data = imgData.data;
+
+                for(var i=0; i<data.length; i+=4) {
+
+                  var luma = (data[i] * 0.2126) + (data[i+1] * 0.7152) + (data[i+2] * 0.0722);
+
+
+                  data[i] = luma;
+                  data[i+1] = luma;
+                  data[i+2] = luma;
+
+
+                }
+                  
+                  
+                imgData.data = data;
+
+                ctx.putImageData(imgData,0,0);
+                break;
+
+                default:
+                  ctx.drawImage(img,0,0, canvas.width, canvas.height);
+
+
+                  var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+                  var data = imgData.data;
+
+                  for(var i=0; i<data.length; i+=4) {
+
+                    var luma = (data[i] * 0.2126) + (data[i+1] * 0.7152) + (data[i+2] * 0.0722);
+
+
+                    data[i] = luma;
+                    data[i+1] = luma;
+                    data[i+2] = luma;
+
+
+                  }
+                  
+                  
+                  imgData.data = data;
+
+                  ctx.putImageData(imgData,0,0);
+                  break;
+              }
+        });
+
+          url.revokeObjectURL(src);
+      }
+	        
+	}
+
+  
+
+
+
+	function printDiv2(div) {
+		var div1 = document.getElementById(div);
+
+    	html2canvas(div1, {
+    		width: 750,
+    		height: 750
+
+		}).then(function(canvas) {
+  			var a = document.createElement('a');
+  			a.href = canvas.toDataURL("image/png");
+  			a.download = 'bhcover.png';
+  			a.click();
+		});
+	}
+
+
+
+  function menuFunction(x) {
+        x.classList.toggle("change");
+        var menu = document.getElementById("menu");
+
+        if ((menu.style.display === "none") || (menu.style.display == '')) {
+            menu.style.display = "block";
+        } else {
+            menu.style.display = "none";
+        }
+    }
+
+
+</script>
+
+
+<body>
+
+  <div id="menu">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="./tbyool.html" class="menuLink"> tbyool </a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="./index.html" class="menuLink"> ginger </a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="./irr.html" class="menuLink"> iridescence </a>
+    </div>
+
+    <div class="container" onclick="menuFunction(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+    </div>
+
+	<div id="frame"> 
+
+		<canvas id= "ph1"></canvas>
+
+    <input class = "watermark" value = "HAMPTONATOR.COM" readonly/>
+
+		<input id = "title" class = "title" maxlength="5" type="text" value="SWEET" />
+
+		<input id = "bh" class = "bh" maxlength="15" type="text" value="BROCKHAMPTON" />
+
+	</div>
+
+    <div id = "buttons" align="center">
+		<label class="button5">
+			PHOTO
+			<input id = "upload1" type="file" class="file" onchange="readURL1(this);" accept="image/gif, image/jpeg, image/png">
+		</label>
+	</div>
+
+	<button id="dbut" class="button5" onclick="printDiv2('frame')"> DOWNLOAD </button>
+
+
+	<div id = "donation" align="center">
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+		<input type="hidden" name="cmd" value="_s-xclick">
+		<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+		">
+		<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+		<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		</form>
+	</div>
+
+
+
+
+
+
+</body>
+</html>

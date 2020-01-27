@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-125808222-1"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+
+  		gtag('config', 'UA-125808222-1');
+	</script>
+
+
+	<link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+	<title>Hamptonator</title>
+</head>
+
+<script src="./public/html2canvas.js"> </script>
+<script src="./public/exif.js"></script>
+<style>
+
+	body {
+
+
+
+   		/*background:url(./public/back.jpg) no-repeat center center fixed;*/
+   		background:black;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+	}
+
+	@font-face {
+  		font-family: 'irr';
+  		src: url("./public/irr/font.woff"), url("./public/irr/font.ttf");
+	}
+
+
+	#logo {
+		background: transparent;
+		height: 150px;
+		width: 600px;
+
+		top: 50px;
+		margin-left: -300px;
+		left: 50%;
+		position: absolute;
+
+		text-align: center;
+
+		font-family: 'irr';	
+		font-size: 85px;
+    	text-shadow: 0 0 45px #00FF00, 0 0 45px #00FF00;
+	}
+
+
+	.bh {
+		position: absolute;
+		width: 200px;
+		top: 720px;
+		left: 15px;
+	   	border: 0px;
+        background: transparent;
+        padding: 0;
+
+        font-size: 10px;
+
+		font-family: 'helvetica', sans-serif;
+		position: absolute;
+    	color: white;
+    	z-index: 2;
+	}
+
+	#frame {
+
+		top: 250px;
+		width: 750px;
+		height: 750px;
+		margin-left: -375px;
+		left: 50%;
+		position: absolute;
+		background-image: url("./public/irr/cover.png");
+	}
+
+	#ph1 {
+		position: absolute;
+		width: 402px;
+		height: 700px;
+		background: transparent;
+		text-align: center;
+		font-size:40px;
+		left: 230px;
+		top: 50px;
+		z-index: 1;
+	}
+
+	#photo1 {
+		width:100%;
+		height: 100%;
+	}
+
+	.file { display: none; }
+
+
+	.button5 {
+
+
+
+    	text-align: center;
+    	vertical-align: middle;
+
+    	font-size: 40px;
+
+    	background: transparent;
+    	border: none;
+    	outline: none;
+    	-webkit-appearance: none;
+    	appearance: none;
+
+    	background: transparent;
+
+
+    	font-family: 'irr';	
+    	text-shadow: 0 0 45px #00FF00, 0 0 45px #00FF00;
+
+
+   	}
+
+
+
+   	#buttons {
+   		top: 1050px;
+    	margin-left: -250px;
+    	left: 50%;
+    	height: 180px;
+    	width: 500px;
+
+    	position: absolute;
+
+   	}
+
+   	#donation {
+   		top: 1450px;
+   		width: 500px;
+   		margin-left: -250px;
+   		left: 50%;
+   		align-content: middle;
+   		position: absolute;
+   	}
+
+
+
+    .container {
+        display: inline-block;
+        cursor: pointer;
+        position: fixed;
+        z-index: 200;
+        }
+
+    .bar1, .bar2, .bar3 {
+        width: 35px;
+        height: 5px;
+        background-color: #333;
+        margin: 6px 0;
+        transition: 0.4s;
+
+        z-index: 110;
+
+        background-color: #00FF00;
+
+    }
+
+    .change .bar1 {
+        -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+        transform: rotate(-45deg) translate(-9px, 6px);
+    }
+
+    .change .bar2 {opacity: 0;}
+
+    .change .bar3 {
+        -webkit-transform: rotate(45deg) translate(-8px, -8px);
+        transform: rotate(45deg) translate(-8px, -8px);
+    }
+
+
+    #menu {
+        background-color: rgba(0, 255, 0, .5);
+        /*opacity: 0.2;*/
+        z-index: 100;
+        top: 0; left: 0; 
+        height: 100%; 
+        width: 100%;
+        position: fixed;
+        text-align: center;
+        display: none;
+
+        /*display: flex;
+        justify-content: center;
+        align-items: center*/
+    }
+
+    .menuLink {
+        color: black;
+        font-size: 100px;
+        text-decoration: none;
+        font-family: 'irr'; 
+        /*opacity: .8 !important;
+        /*top: 25%;*/
+    }
+
+
+</style>
+
+
+<script type="text/javascript">
+
+
+
+	function getOrientation(file, callback) {
+    	var reader = new FileReader();
+    	reader.onload = function(e) {
+
+        	var view = new DataView(e.target.result);
+        	if (view.getUint16(0, false) != 0xFFD8)
+        	{
+            	return callback(-2);
+        	}
+        	var length = view.byteLength, offset = 2;
+        	while (offset < length) 
+        	{
+            	if (view.getUint16(offset+2, false) <= 8) return callback(-1);
+            	var marker = view.getUint16(offset, false);
+            	offset += 2;
+            	if (marker == 0xFFE1) 
+            	{
+                	if (view.getUint32(offset += 2, false) != 0x45786966) 
+                	{
+                    	return callback(-1);
+                	}
+
+                	var little = view.getUint16(offset += 6, false) == 0x4949;
+                	offset += view.getUint32(offset + 4, little);
+                	var tags = view.getUint16(offset, little);
+                	offset += 2;
+                	for (var i = 0; i < tags; i++)
+                	{
+                    	if (view.getUint16(offset + (i * 12), little) == 0x0112)
+                    	{
+                        	return callback(view.getUint16(offset + (i * 12) + 8, little));
+                    	}
+                	}
+            	}
+            	else if ((marker & 0xFF00) != 0xFF00)
+            	{
+                	break;
+            	}
+            	else
+            	{ 
+                	offset += view.getUint16(offset, false);
+            	}
+        	}
+        	return callback(-1);
+    	};
+    	reader.readAsArrayBuffer(file);
+	}
+
+
+	function drawRotated(degrees){
+    	ctx.clearRect(0,0,canvas.width,canvas.height);
+    	ctx.save();
+    	ctx.translate(canvas.width/2,canvas.height/2);
+    	ctx.rotate(degrees*Math.PI/180);
+    	ctx.drawImage(image,-image.width/2,-image.width/2);
+    	ctx.restore();
+	}
+
+	
+	function readURL1(input) {
+
+
+		// console.log(input.files[0]);
+		
+    
+
+		ctx = document.getElementById('ph1').getContext('2d'),
+        img = new Image(),
+        f = document.getElementById("uploadimage").files[0],
+       	url = window.URL || window.webkitURL,
+        src = url.createObjectURL(f)
+
+
+    	img.src = src;
+
+
+
+    	img.onload = function() {
+        	var canvas = ctx.canvas;
+
+        	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+   			getOrientation(input.files[0], function(orientation) {
+        		// alert('orientation: ' + orientation);
+
+        		switch(orientation){
+        			case 6:
+        				// alert("working");
+        				ctx.save();
+   						ctx.translate(canvas.width / 2, canvas.height / 2); //let's translate
+						ctx.rotate((90) * Math.PI/180); 
+    					ctx.drawImage(img,-canvas.height/2,-canvas.width/2, canvas.height, canvas.width);
+    					ctx.restore();
+
+    					var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+						var data = imgData.data;
+
+						for(var i=0; i<data.length; i+=4) {
+							var blue_hsv = data[i+2] / 255;
+							if(blue_hsv > 0.85){
+                				data[i] = 229;
+                				data[i+1] = 221;
+                				data[i+2] = 210;
+            				}else if(blue_hsv >= 0.7 && blue_hsv < 0.85){
+                				data[i] = 211;
+                				data[i+1] = 44;
+                				data[i+2] = 114;
+            				}else if(blue_hsv >= 0.55 && blue_hsv < 0.7){
+                				data[i] = 220;
+                				data[i+1] = 118;
+                				data[i+2] = 50;
+            				}else if(blue_hsv >= 0.4 && blue_hsv < 0.55){
+                				data[i] = 214;
+                				data[i+1] = 193;
+                				data[i+2] = 43;
+            				}else if(blue_hsv >= 0.25 && blue_hsv < 0.4){
+                				data[i] = 150;
+                				data[i+1] = 194;
+                				data[i+2] = 32;
+            				}else if(blue_hsv >= 0.1 && blue_hsv < 0.25){
+                				data[i] = 25;
+                				data[i+1] = 142;
+                				data[i+2] = 191;
+            				}else {
+                				data[i] = 2;
+                				data[i+1] = 7;
+                				data[i+2] = 101;
+            				}
+						}	
+
+						imgData.data = data;
+
+						ctx.putImageData(imgData,0,0);
+
+            			break;
+
+            		default:
+       					ctx.drawImage(img,0,0, canvas.width, canvas.height);
+
+       					var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+						var data = imgData.data;
+
+						for(var i=0; i<data.length; i+=4) {
+							var blue_hsv = data[i+2] / 255;
+							if(blue_hsv > 0.85){
+                				data[i] = 229;
+                				data[i+1] = 221;
+                				data[i+2] = 210;
+            				}else if(blue_hsv >= 0.7 && blue_hsv < 0.85){
+                				data[i] = 211;
+                				data[i+1] = 44;
+                				data[i+2] = 114;
+            				}else if(blue_hsv >= 0.55 && blue_hsv < 0.7){
+                				data[i] = 220;
+                				data[i+1] = 118;
+                				data[i+2] = 50;
+            				}else if(blue_hsv >= 0.4 && blue_hsv < 0.55){
+                				data[i] = 214;
+                				data[i+1] = 193;
+                				data[i+2] = 43;
+            				}else if(blue_hsv >= 0.25 && blue_hsv < 0.4){
+                				data[i] = 150;
+                				data[i+1] = 194;
+                				data[i+2] = 32;
+            				}else if(blue_hsv >= 0.1 && blue_hsv < 0.25){
+                				data[i] = 25;
+                				data[i+1] = 142;
+                				data[i+2] = 191;
+            				}else {
+                				data[i] = 2;
+                				data[i+1] = 7;
+                				data[i+2] = 101;
+            				}
+						}	
+
+						imgData.data = data;
+
+						ctx.putImageData(imgData,0,0);
+       					break;
+            	}
+    		});
+
+       		url.revokeObjectURL(src);
+    	}
+	        
+	}
+
+  
+
+
+
+	function printDiv2(div) {
+		var div1 = document.getElementById(div);
+
+    	html2canvas(div1, {
+    		width: 750,
+    		height: 750
+
+		}).then(function(canvas) {
+  			var a = document.createElement('a');
+  			a.href = canvas.toDataURL("image/png");
+  			a.download = 'bhcover.png';
+  			a.click();
+		});
+	}
+
+
+
+    function menuFunction(x) {
+        x.classList.toggle("change");
+        var menu = document.getElementById("menu");
+
+        if ((menu.style.display === "none") || (menu.style.display == '')) {
+            menu.style.display = "block";
+        } else {
+            menu.style.display = "none";
+        }
+    }
+
+
+</script>
+
+
+<body>
+
+    <div id="menu">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="./tbyool.html" class="menuLink"> tbyool </a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="./sat.html" class="menuLink"> saturation </a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="./inde.html" class="menuLink"> ginger </a>
+    </div>
+
+    <div class="container" onclick="menuFunction(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+    </div>
+
+	<div id=logo> hamptonator </div>
+
+
+	<div id="frame"> 
+
+		<canvas id= "ph1"></canvas>
+		<input class = "bh" value = "HAMPTONATOR.COM" readonly/>
+
+	</div>
+
+    <div id = "buttons" align="center">
+		<label class="button5">
+			PHOTO
+			<input id = "uploadimage" type="file" class="file" onchange="readURL1(this);" accept="image/gif, image/jpeg, image/png">
+		</label>
+		<br>
+		<br>
+		<br>
+		<br>
+		<div class="button5" onclick="printDiv2('frame')"> DOWNLOAD </div>
+        <br>
+        <br>
+        <br>
+        <div class="button5" onclick="window.location.href='/irrfilter.html'"> FILTER </div>
+
+	</div>
+
+
+
+	<div id = "donation" align="center">
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+		<input type="hidden" name="cmd" value="_s-xclick">
+		<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+		">
+		<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+		<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		</form>
+	</div>
+
+
+
+
+
+
+</body>
+</html>
