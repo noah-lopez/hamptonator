@@ -24,8 +24,7 @@
 
 
 
-   		/*background:url(./public/back.jpg) no-repeat center center fixed;*/
-   		background:#E43435;
+   		background:url(./public/clouds.jpg) no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -35,7 +34,7 @@
 
 	@font-face {
   		font-family: 'ginger';
-  		src: url("./public/ginger/font.woff"), url("./public/ginger/font.ttf");
+  		src: url("./public/td/td.woff"), url("./public/td/td.ttf");
 	}
 
 
@@ -59,21 +58,20 @@
 	.txt1 {
 		position: absolute;
 		width: 500px;
-		top: 175px;
 		left: 125px;
 	   	border: 0px;
         background: transparent;
         padding: 0;
         text-align: center;
 
-        font-size: 100px;
+        font-size: 115px;
 
 		font-family: 'ginger';
 		position: absolute;
     	z-index: 2;
-    	color: #E43435;
-    	transform: rotate(-5deg);
-    	-webkit-transform: rotate(-5deg);
+    	color: black;
+    	transform: rotate(176deg);
+    	-webkit-transform: rotate(176deg);
 	}
 
 
@@ -140,8 +138,8 @@
 	.hamp {
 		position: absolute;
 		width: 200px;
-		top: 705px;
-		left: 30px;
+		top: 14px;
+		left: 620px;
 	   	border: 0px;
         background: transparent;
         padding: 0;
@@ -150,7 +148,6 @@
 
 		font-family: 'helvetica', sans-serif;
 		position: absolute;
-    	z-index:
     }
 
 	#frame {
@@ -161,43 +158,43 @@
 		margin-left: -375px;
 		left: 50%;
 		position: absolute;
-		background:white;
+		background-color:rgb(238,51,70);
 		overflow: hidden;
 	}
 
 	#ph1 {
 		position: absolute;
-		width: 750px;
-		height: 750px;
+		width: 730px;
+		height: 420px;
 		background: transparent;
 		text-align: center;
 		font-size:40px;
-		left: 200px;
-		/*top: 50px;*/
+		top: 320px;
+		left: 10px;
 		z-index: 1;
 	}
 
 	#ph2 {
 		position: absolute;
-		width: 200px;
-		height: 120px;
+		width: 375px;
+		height: 30px;
 		background: transparent;
 		text-align: center;
 		font-size:40px;
-		left: 85px;
-		top: 450px;
+		left: 187.5px;
+		top: 160px;
 		z-index: 3;
 	}
 
 	#ph3 {
 		position: absolute;
-		width: 80px;
-		height: 20px;
+		width: 85px;
+		height: 25px;
 		background: transparent;
 		text-align: center;
 		font-size:40px;
-		left: 640px;
-		top: 700px;
+		left: 18.75px;
+		top: 7.5px;
 		z-index: 1;
 	}
 
@@ -215,6 +212,7 @@
 
     	text-align: center;
     	vertical-align: middle;
+    	text-align-last:center;
 
     	font-size: 40px;
 
@@ -233,6 +231,17 @@
 
    	}
 
+   #spine {
+   	height: 95px;
+   	width: 750px;
+   	background-image: url("./public/td/spine.png");
+   	background-size: cover;
+   	top: 205px;
+   	border-bottom: 5px solid #ca0a19;
+   	border-top: 5px solid #ca0a19;
+    position: absolute;
+
+   }
 
 
    	#buttons {
@@ -414,98 +423,14 @@
 
         		switch(orientation){
         			case 6:
-        				// alert("working");
+        				alert("working");
         				ctx.save();
    						ctx.translate(canvas.width / 2, canvas.height / 2); //let's translate
 						ctx.rotate((90) * Math.PI/180); 
     					ctx.drawImage(img,-canvas.height/2,-canvas.width/2, canvas.height, canvas.width);
     					ctx.restore();
-
-    					var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
-						var data = imgData.data;
-
-						for(var i=0; i<data.length; i+=4) {
-							var blue_hsv = data[i+2] / 255;
-							if(blue_hsv > 0.85){
-                				data[i] = 242;
-                				data[i+1] = 252;
-                				data[i+2] = 253;
-            				}else if(blue_hsv >= 0.7 && blue_hsv < 0.85){
-                				data[i] = 162;
-                				data[i+1] = 228;
-                				data[i+2] = 224;
-            				}else if(blue_hsv >= 0.55 && blue_hsv < 0.7){
-                				data[i] = 51;
-                				data[i+1] = 185;
-                				data[i+2] = 223;
-            				}else if(blue_hsv >= 0.4 && blue_hsv < 0.55){
-                				data[i] = 43;
-                				data[i+1] = 127;
-                				data[i+2] = 230;
-            				}else if(blue_hsv >= 0.25 && blue_hsv < 0.4){
-                				data[i] = 38;
-                				data[i+1] = 100;
-                				data[i+2] = 224;
-            				}else if(blue_hsv >= 0.1 && blue_hsv < 0.25){
-                				data[i] = 15;
-                				data[i+1] = 80;
-                				data[i+2] = 212;
-            				}else {
-                				data[i] = 0;
-                				data[i+1] = 51;
-                				data[i+2] = 102;
-            				}
-						}	
-
-						imgData.data = data;
-
-						ctx.putImageData(imgData,0,0);
-
-            			break;
-
             		default:
        					ctx.drawImage(img,0,0, canvas.width, canvas.height);
-
-       					var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
-						var data = imgData.data;
-
-						for(var i=0; i<data.length; i+=4) {
-							var blue_hsv = data[i+2] / 255;
-							if(blue_hsv > 0.85){
-                				data[i] = 242;
-                				data[i+1] = 252;
-                				data[i+2] = 253;
-            				}else if(blue_hsv >= 0.7 && blue_hsv < 0.85){
-                				data[i] = 162;
-                				data[i+1] = 228;
-                				data[i+2] = 224;
-            				}else if(blue_hsv >= 0.55 && blue_hsv < 0.7){
-                				data[i] = 51;
-                				data[i+1] = 185;
-                				data[i+2] = 223;
-            				}else if(blue_hsv >= 0.4 && blue_hsv < 0.55){
-                				data[i] = 43;
-                				data[i+1] = 127;
-                				data[i+2] = 230;
-            				}else if(blue_hsv >= 0.25 && blue_hsv < 0.4){
-                				data[i] = 38;
-                				data[i+1] = 100;
-                				data[i+2] = 224;
-            				}else if(blue_hsv >= 0.1 && blue_hsv < 0.25){
-                				data[i] = 15;
-                				data[i+1] = 80;
-                				data[i+2] = 212;
-            				}else {
-                				data[i] = 0;
-                				data[i+1] = 51;
-                				data[i+2] = 102;
-            				}
-						}	
-
-						imgData.data = data;
-
-						ctx.putImageData(imgData,0,0);
-       					break;
             	}
     		});
 
@@ -547,6 +472,66 @@
     }
 
 
+    function color(x) {
+    	if (x == "SALMON") {
+    		console.log("SALMON");
+    		document.getElementById("frame").style.backgroundColor = "#f8979e";
+    		document.getElementById("spine").style.borderColor = "#ed6e79";
+    	}
+
+    	if (x == "YELLOW") {
+    		console.log("YELLOW");
+    		document.getElementById("frame").style.backgroundColor = "#fcde64";
+    		document.getElementById("spine").style.borderColor = "#f5ce3d";
+
+    	}
+
+    	if (x == "PURPLE") {
+    		console.log("PURPLE");
+    		document.getElementById("frame").style.backgroundColor = "#9c80ee";
+    		document.getElementById("spine").style.borderColor = "#5f4ccc";
+    	}
+
+    	if (x == "BLUE") {
+    		console.log("BLUE");
+    		document.getElementById("frame").style.backgroundColor = "#63adf6";
+    		document.getElementById("spine").style.borderColor = "#1d70e2";
+    	}
+
+    	if (x == "GRAY") {
+    		console.log("GRAY");
+    		document.getElementById("frame").style.backgroundColor = "#dde5e8";
+    		document.getElementById("spine").style.borderColor = "#8d91ab";
+    	}
+
+    	if (x == "GREEN") {
+    		console.log("GREEN");
+    		document.getElementById("frame").style.backgroundColor = "#ade083";
+    		document.getElementById("spine").style.borderColor = "#58be2b";
+    	}
+
+    	if (x == "RED") {
+    		console.log("RED");
+    		document.getElementById("frame").style.backgroundColor = "#ea2f42";
+    		document.getElementById("spine").style.borderColor = "#ca0a19";
+    	}
+
+    	if (x == "ORANGE") {
+    		console.log("ORANGE");
+    		document.getElementById("frame").style.backgroundColor = "#f68e69";
+    		document.getElementById("spine").style.borderColor = "#e96c4d";
+    	}
+
+    	if (x == "PINK") {
+    		console.log("PINK");
+    		document.getElementById("frame").style.backgroundColor = "#fa95e9";
+    		document.getElementById("spine").style.borderColor = "#ed56cb";
+    	}
+
+
+    }
+
+
 </script>
 
 
@@ -560,17 +545,17 @@
         <br>
         <br>
         <br>
-        <a href="./tbyool.html" class="menuLink"> tbyool </a>
+        <a href="./tbyool" class="menuLink"> tbyool </a>
         <br>
         <br>
         <br>
         <br>
-        <a href="./sat.html" class="menuLink"> saturation </a>
+        <a href="./sat" class="menuLink"> saturation </a>
         <br>
         <br>
         <br>
         <br>
-        <a href="./irr.html" class="menuLink"> iridescence </a>
+        <a href="./irr" class="menuLink"> iridescence </a>
     </div>
 
     <div class="container" onclick="menuFunction(this)">
@@ -585,15 +570,12 @@
 	<div id="frame"> 
 
 		<canvas id= "ph1"></canvas>
-		<img src="./public/ginger/seal.png" id="ph2">
-		<img src="./public/ginger/lyrics.png" id="ph3">
+		<img src="./public/td/loc.png" id="ph2">
+		<img src="./public/td/lyrics.png" id="ph3">
 		
-		<input class = "txt1" value = "IF YOU" maxlength="8" />
-		<input class = "txt2" value = "PRAY" maxlength="8"/>
-		<input class = "txt3" value = "RIGHT" maxlength="8"/>
+		<input class = "txt1" value = "I.F.L." maxlength="8" />
+		<div id="spine"></div>
 
-
-		<input class = "bh" value = "BROCKHAMPTON"/>
 		<input class = "hamp" value = "HAMPTONATOR.COM" readonly/>
 
 	</div>
@@ -611,7 +593,18 @@
         <br>
         <br>
         <br>
-        <div class="button5" onclick="window.location.href='/filter.html'"> FILTER </div>
+        <select class="button5" name="COLOR" onchange="color(this.value)">
+  			<option value="RED">RED</option>
+  			<option value="YELLOW">YELLOW</option>
+  			<option value="GREEN">GREEN</option>
+  			<option value="PURPLE">PURPLE</option>
+  			<option value="SALMON">SALMON</option>
+  			<option value="GRAY">GRAY</option>
+  			<option value="BLUE">BLUE</option>
+  			<option value="ORANGE">ORANGE</option>
+  			<option value="PINK">PINK</option>
+		</select>
+
 
 	</div>
 
